@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: nudl-backend
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false
+      - key: UPLOAD_DIR
+        value: /var/data/uploads
+      - key: MAX_UPLOAD_MB
+        value: 50
+      - key: FRONTEND_ORIGINS
+        value: "*"
+    disk:
+      name: nudl-files
+      mountPath: /var/data
+      sizeGB: 1
